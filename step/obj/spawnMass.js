@@ -1,7 +1,7 @@
 var baseSpawnMassObj = function (){
     this.name   = 'spawnMass';
-    this.x      = DEVICE.w;
-    this.y      = -200;
+    this.x      = BASE.window.w ;
+    this.y      = -200 ;
     this.w      = 96;
     this.h      = 80;
     this.layer  = 0;
@@ -39,10 +39,10 @@ baseSpawnMassObj.prototype.create = function(_num){
     var param = Array();
     param.push({x:(this.x - 1/3 * this.w) + this.x - (1/3 * this.w) * _num,
                 y:(this.y - 1/6 * this.w) + this.y + (1/2 * this.w) * _num,
-                w:96, h:80, ctx:CTX, layer:1});
+                w:96, h:80, ctx:BASE.ctx, layer:1});
     param.push({x:(this.x + 1/3 * this.w) + this.x - (1/3 * this.w) * _num,
                 y:(this.y + 1/6 * this.w) + this.y + (1/2 * this.w) * _num,
-                w:96, h:80, ctx:CTX, layer:2});
+                w:96, h:80, ctx:BASE.ctx, layer:2});
 
     if (this.pos == 1){
         param[0].type = this.type;

@@ -71,11 +71,6 @@ function initMain(){
 
     sceneLoad('loadSrc');
     drawObject();
-
-    console.log((BASE.window.w/2) * BASE.ratio);
-    console.log((BASE.window.h/2) * BASE.ratio);
-    console.log((BASE.window.w)   * BASE.ratio);
-    console.log((BASE.window.h)   * BASE.ratio);
 }
 
 /*------------------------- Object Lib -------------------------*/

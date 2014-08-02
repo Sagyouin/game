@@ -16,13 +16,14 @@ function sceneLoad(_scene){
         case 'loadSrc':
             BASE.layer = 4;
             setImage({name:'player', src:IMAGE_BASE_DIR + '/player.png'});
+            setImage({name:'mass', src:IMAGE_BASE_DIR + '/mass.png'});
             sceneLoad('start');
             break;
         case 'start':
             var player = new basePlayerObj({x:86, y:315, w:64, h:96, ctx:BASE.ctx, layer:3});
             addObject(player);
-            //var spawnMass = new baseSpawnMassObj ();
-            //addObject(spawnMass);
+            var spawnMass = new baseSpawnMassObj ();
+            addObject(spawnMass);
             break;
         default:
             break;

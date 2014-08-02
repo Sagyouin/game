@@ -10,9 +10,8 @@ var baseMassObj = function(_param){
     this.layer  = _param.layer;
 
     this.type   = _param.type;
-    this.img        = new Image();
+    this.img        = Array();
     this.img.num    = this.type;
-    this.img.src    = "./step/img/step.png";
     this.img.sw     = 96;
     this.img.sh     = 80; 
     this.img.sx     = 0;
@@ -35,7 +34,7 @@ baseMassObj.prototype.update = function(_num){
             this.status = 0;
         }
     }
-    if(this.x + this.w/2 < -50 || this.y - this.h/2 > DEVICE.h + 50){
+    if(this.x + this.w/2 < -50 || this.y - this.h/2 > BASE.canvas.height + 50){
         deleteObject(_num);
     }
 }
@@ -48,6 +47,5 @@ baseMassObj.prototype.touch = function(_param){
 }
 
 baseMassObj.prototype.draw = function(){
-    this.ctx.drawImage(this.img, this.img.sx, this.img.sy, this.img.sw, this.img.sh,
-        (this.x - this.w / 2), ( this.y - this.h / 2 + this.z), this.w, this.h);
+    drawImage(this);
 }

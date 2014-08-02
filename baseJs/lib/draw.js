@@ -16,7 +16,7 @@ function strokeSquare(_param){
     _param.ctx.strokeStyle = "rgba(" +_param.red+ "," +_param.green+ "," +_param.blue+ "," +_param.alpha+ ")";
     _param.ctx.beginPath();
     _param.ctx.translate(_param.x * BASE.ratio + BASE.drawOffset.x, _param.y * BASE.ratio + BASE.drawOffset.y);
-//    _param.ctx.rotate(_param.rad);
+    _param.ctx.rotate(_param.rad);
     _param.ctx.strokeRect(-_param.w/2 * BASE.ratio, -_param.h/2 * BASE.ratio, _param.w * BASE.ratio, _param.h * BASE.ratio);
     _param.ctx.restore();
 }
@@ -72,22 +72,9 @@ function strokeCircle(_param){
 }
 
 function strokeEllipse(_param){
-    /*
-    _param.ctx.save();
-    if(_param.type == 1){
-        var distinct = _param.r * 2 * Math.PI;
-        var oneline = distinct / 20;
-        _param.ctx.setLineDash([oneline / 3 * 2,oneline / 3]);
-    }
-    _param.ctx.strokeStyle = "rgba(" +_param.red+ "," +_param.green+ "," +_param.blue+ "," +_param.alpha+ ")";
-    _param.ctx.beginPath();
-    _param.ctx.ellipse(_param.x,_param.y,_param.r,_param.r/2,0,0,Math.PI * 2);
-    _param.ctx.stroke();
-    _param.ctx.restore();
-    */
     _param.ctx.save();
     _param.ctx.beginPath();
-    _param.ctx.translate(_param.x, _param.y);
+    _param.ctx.translate(_param.x * BASE.ratio + BASE.drawOffset.x , _param.y * BASE.ratio + BASE.drawOffset.y);
     _param.ctx.scale(1,0.5);
     _param.ctx.arc(0, 0, _param.r, 0, Math.PI * 180, false);
     _param.ctx.restore();

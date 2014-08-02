@@ -30,7 +30,7 @@ var basePlayerObj = function (_param){
 };
 
 basePlayerObj.prototype.start = function(){
-    this.flag   = 1;//0:drawON  1: drawOff
+    this.flag   = 1;//0:drawOFF 1:drawON
     this.status = 0;//0:none    1:jumping
     this.pos    = 1;//0:left    1:center  2:right
 }
@@ -53,8 +53,6 @@ basePlayerObj.prototype.update = function(){
 basePlayerObj.prototype.draw = function(){
     this.img.sx = this.img.sw * this.img.num;
     drawImage(this);
-    //this.ctx.drawImage(IMAGE.player, this.img.sw * this.img.num, this.img.sy, this.img.sw, this.img.sh, 
-    //        (this.x - this.w / 2) * BASE.ratio, ( this.y - this.h / 2 + this.z) * BASE.ratio, this.w * BASE.ratio, this.h * BASE.ratio);
 }
 
 basePlayerObj.prototype.touch = function(_param){
