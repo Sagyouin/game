@@ -35,7 +35,7 @@ baseSpawnMassObj.prototype.touch = function(_param){
 
 baseSpawnMassObj.prototype.create = function(_num){
     this.pos  = randomNum(1,3); //1:left 2:right 3:duble
-    this.type = 1;              //massType
+    this.type = 2;              //massType
     var param = Array();
     param.push({x:(this.x - 1/3 * this.w) + this.x - (1/3 * this.w) * _num,
                 y:(this.y - 1/6 * this.w) + this.y + (1/2 * this.w) * _num,

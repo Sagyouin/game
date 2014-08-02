@@ -9,17 +9,8 @@ var basePlayerObj = function (_param){
     this.ctx    = _param.ctx;
     this.layer  = _param.layer;
 
-    this.base   = Array();
-    for (var i = 0; i < 3; i++){
-        this.base[i] = {x:(this.x + (i - 1) * BASE_TILE.w / 2), y:(this.y + (i - 1) * BASE_TILE.h / 2)};
-    }
-
     this.img        = Array();
     this.img.num    = 0;
-    this.img.sx     = 0;
-    this.img.sy     = 0;
-    this.img.sw     = 64;
-    this.img.sh     = 96;
 
     this.speed      = Array();
     this.speed.x    = 0;
@@ -27,6 +18,11 @@ var basePlayerObj = function (_param){
     this.speed.z    = 0;
 
     this.jumpCnt    = 0;
+
+    this.base   = Array();
+    for (var i = 0; i < 3; i++){
+        this.base[i] = {x:(this.x + (i - 1) * BASE_TILE.w / 2), y:(this.y + (i - 1) * BASE_TILE.h / 2)};
+    }
 };
 
 basePlayerObj.prototype.start = function(){
@@ -46,6 +42,7 @@ basePlayerObj.prototype.update = function(){
         }
         if (this.tmpTime >= JUMP_TIME){
             this.status = 0;
+            this.hitMassCheck();
         }
     }
 }
@@ -53,6 +50,7 @@ basePlayerObj.prototype.update = function(){
 basePlayerObj.prototype.draw = function(){
     this.img.sx = this.img.sw * this.img.num;
     drawImage(this);
+    //strokeCircle({x:this.x, y:this.y + this.h / 2, r:this.r / 4, ctx:this.ctx});
 }
 
 basePlayerObj.prototype.touch = function(_param){
@@ -77,3 +75,15 @@ basePlayerObj.prototype.jumpSet = function(_posOld, _posNew){
     this.speed.z = -8;
 }
 
+basePlayerObj.prototype.hitMassCheck = function(){
+    for(var i = 0; i < OBJ.length; i++){
+        if (OBJ[i].name == 'mass'){
+            if (inRing({x:this.x, y:this.y + this.h / 2, r:this.r / 4}, {x:OBJ[i].x, y:OBJ[i].y, r:OBJ[i].r / 4} )){
+                if (OBJ[i].type == 0){
+                    sceneLoad('start');
+                }
+                break;
+            }
+        }
+    }
+}

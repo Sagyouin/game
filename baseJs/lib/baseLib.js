@@ -169,8 +169,12 @@ function randomNum(_min, _max){
     return random;
 }
 function setImage(_param){
-    IMAGE[_param.name]      = new Image();
-    IMAGE[_param.name].src  = _param.src;
+    IMAGE[_param.name]          = new Image();
+    IMAGE[_param.name].src      = _param.src;
+    IMAGE[_param.name].sw       = _param.sw;
+    IMAGE[_param.name].sh       = _param.sh;
+    IMAGE[_param.name].w        = _param.w;
+    IMAGE[_param.name].h        = _param.h;
 }
 /*----------------- LIB TOOLS -----------------*/
 

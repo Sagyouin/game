@@ -48,10 +48,9 @@ function strokeSquareR(_param){
 function fillCircle(_param){
     _param.ctx.save();
     _param.ctx.beginPath();
-    _param.ctx.translate(_param.x, _param.y);
-    //_param.ctx.rotate(_param.rad);
+    _param.ctx.translate(_param.x * BASE.ratio + BASE.drawOffset.x , _param.y * BASE.ratio + BASE.drawOffset.y);
     _param.ctx.fillStyle = "rgba(" +_param.red+ "," +_param.green+ "," +_param.blue+ "," +_param.alpha+ ")";
-    _param.ctx.arc(0, 0, _param.r, 0, Math.PI * 2, true);
+    _param.ctx.arc(0, 0, _param.r * BASE.ratio, 0, Math.PI * 2, true);
     _param.ctx.fill();
     _param.ctx.restore();
 }
@@ -64,9 +63,10 @@ function strokeCircle(_param){
         var oneline = distinct / 20;
         _param.ctx.setLineDash([oneline / 3 * 2,oneline / 3]);
     }
+    _param.ctx.translate(_param.x * BASE.ratio + BASE.drawOffset.x , _param.y * BASE.ratio + BASE.drawOffset.y);
     _param.ctx.strokeStyle = "rgba(" +_param.red+ "," +_param.green+ "," +_param.blue+ "," +_param.alpha+ ")";
     _param.ctx.beginPath();
-    _param.ctx.arc(_param.x, _param.y, _param.r, _param.rad, _param.rad + Math.PI * 180, false);
+    _param.ctx.arc(0, 0, _param.r * BASE.ratio, 0, Math.PI * 2, true);
     _param.ctx.stroke();
     _param.ctx.restore();
 }
@@ -93,13 +93,13 @@ function strokeText(_param){
 function drawImage(_param){
     _param.ctx.drawImage(
         IMAGE[_param.name], 
-        _param.img.sx, 
-        _param.img.sy, 
-        _param.img.sw, 
-        _param.img.sh,
-        (_param.x - _param.w / 2)            * BASE.ratio + BASE.drawOffset.x, 
-        (_param.y - _param.h / 2 + _param.z) * BASE.ratio + BASE.drawOffset.y,
-        _param.w * BASE.ratio,
-        _param.h * BASE.ratio
+        IMAGE[_param.name].sw *           (_param.img.num % (IMAGE[_param.name].w / IMAGE[_param.name].sw)), 
+        IMAGE[_param.name].sh * Math.floor(_param.img.num / (IMAGE[_param.name].w / IMAGE[_param.name].sw)), 
+        IMAGE[_param.name].sw, 
+        IMAGE[_param.name].sh,
+        ((_param.x - _param.w / 2)            * BASE.ratio + BASE.drawOffset.x)|0, 
+        ((_param.y - _param.h / 2 + _param.z) * BASE.ratio + BASE.drawOffset.y)|0,
+        (_param.w * BASE.ratio)|0,
+        (_param.h * BASE.ratio)|0
     );
 }

@@ -9,26 +9,23 @@ var baseMassObj = function(_param){
     this.ctx    = _param.ctx;
     this.layer  = _param.layer;
 
-    this.type   = _param.type;
+    this.type       = _param.type;
     this.img        = Array();
     this.img.num    = this.type;
-    this.img.sw     = 96;
-    this.img.sh     = 80; 
-    this.img.sx     = 0;
-    this.img.sy     = this.img.sh * this.img.num;
 
-    this.speed      = {x:(-1/3 * this.w / JUMP_TIME), y:(1/2 * this.w / JUMP_TIME)};
+    this.speed      = {x:(-1/3 * this.w / JUMP_TIME), y:(1/2 * this.w / JUMP_TIME), z:0};
 };
 
 baseMassObj.prototype.start = function(){
     this.flag   = 1;
-    this.status = 0;
+    this.status = 0;//0:none 1:moving
 }
 
 baseMassObj.prototype.update = function(_num){
     if (this.status == 1){
         this.x += this.speed.x;
         this.y += this.speed.y;
+        this.z += this.speed.z;
         this.tmpTime++;
         if (this.tmpTime >= JUMP_TIME){
             this.status = 0;
@@ -48,4 +45,5 @@ baseMassObj.prototype.touch = function(_param){
 
 baseMassObj.prototype.draw = function(){
     drawImage(this);
+    //strokeCircle({x:this.x, y:this.y, r:this.r / 4, ctx:this.ctx});
 }
