@@ -5,13 +5,18 @@ var baseMassObj = function(_param){
     this.z      = 0;
     this.w      = _param.w;
     this.h      = _param.h;
-    this.r      = _param.w;
     this.ctx    = _param.ctx;
     this.layer  = _param.layer;
 
     this.type       = _param.type;
     this.img        = Array();
     this.img.num    = this.type;
+
+    this.cd     = Array();
+    this.cd.x   = this.x;
+    this.cd.y   = this.y;
+    this.cd.r   = this.w / 4;
+
 
     this.speed      = {x:(-1/3 * this.w / JUMP_TIME), y:(1/2 * this.w / JUMP_TIME), z:0};
 };
@@ -27,6 +32,8 @@ baseMassObj.prototype.update = function(_num){
         this.y += this.speed.y;
         this.z += this.speed.z;
         this.tmpTime++;
+        this.cd.x   = this.x;
+        this.cd.y   = this.y;
         if (this.tmpTime >= JUMP_TIME){
             this.status = 0;
         }
@@ -45,5 +52,5 @@ baseMassObj.prototype.touch = function(_param){
 
 baseMassObj.prototype.draw = function(){
     drawImage(this);
-    //strokeCircle({x:this.x, y:this.y, r:this.r / 4, ctx:this.ctx});
+    //strokeCircle({x:this.cd.x, y:this.cd.y, r:this.cd.r, ctx:this.ctx});
 }

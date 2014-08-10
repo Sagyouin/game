@@ -5,9 +5,14 @@ var basePlayerObj = function (_param){
     this.z      = 0;
     this.w      = _param.w;
     this.h      = _param.h;
-    this.r      = _param.w;
+
     this.ctx    = _param.ctx;
     this.layer  = _param.layer;
+
+    this.cd     = Array();
+    this.cd.x   = this.x;
+    this.cd.y   = this.y + this.h / 2;
+    this.cd.r   = this.w / 4;
 
     this.img        = Array();
     this.img.num    = 0;
@@ -36,6 +41,8 @@ basePlayerObj.prototype.update = function(){
         this.x += this.speed.x;
         this.y += this.speed.y;
         this.z += this.speed.z;
+        this.cd.x   = this.x;
+        this.cd.y   = this.y + this.h / 2;;
         this.tmpTime++;
         if (this.tmpTime == (JUMP_TIME / 2)){
             this.speed.z *= -1;
@@ -50,7 +57,7 @@ basePlayerObj.prototype.update = function(){
 basePlayerObj.prototype.draw = function(){
     this.img.sx = this.img.sw * this.img.num;
     drawImage(this);
-    //strokeCircle({x:this.x, y:this.y + this.h / 2, r:this.r / 4, ctx:this.ctx});
+    //strokeCircle({x:this.cd.x, y:this.cd.y, r:this.cd.r, ctx:this.ctx});
 }
 
 basePlayerObj.prototype.touch = function(_param){
@@ -76,9 +83,10 @@ basePlayerObj.prototype.jumpSet = function(_posOld, _posNew){
 }
 
 basePlayerObj.prototype.hitMassCheck = function(){
+
     for(var i = 0; i < OBJ.length; i++){
         if (OBJ[i].name == 'mass'){
-            if (inRing({x:this.x, y:this.y + this.h / 2, r:this.r / 4}, {x:OBJ[i].x, y:OBJ[i].y, r:OBJ[i].r / 4} )){
+            if (hitRing(this.cd, OBJ[i].cd)){
                 if (OBJ[i].type == 0){
                     sceneLoad('start');
                 }
