@@ -70,25 +70,36 @@ function initMain(){
     }
 
     sceneLoad('loadSrc');
-    drawObject();
+    mainLoop();
 }
 
 /*------------------------- Object Lib -------------------------*/
-function drawObject(){
+function mainLoop(){
+    var i = 0;
+    //reset window
     BASE.ctx.clearRect(0,0,BASE.canvas.width, BASE.canvas.height);
-    strokeSquare({  x:(BASE.window.w/2),
-                    y:(BASE.window.h/2),
-                    w:(BASE.window.w),
-                    h:(BASE.window.h),
-                    ctx:BASE.ctx});
 
-    for (var i = 0; i < OBJ.length; i++) {OBJ[i].update(i);}
+    //update object
+    for (i = 0; i < OBJ.length; i++) {
+        OBJ[i].update(i);
+    }
+
+    //delete object
+    for (i = 0; i < OBJ.length; i++) {
+        if (OBJ[i].flag == 2) {
+            deleteObject(i);
+            i--;
+        }
+    }
+
+    //draw object
     for (var j = 0; j < BASE.layer; j++){
         for (var i = 0; i < OBJ.length; i++) {
             if (OBJ[i].layer == j){OBJ[i].draw(i);}
         }
     }
-    setTimeout('drawObject()', (1000 / BASE.fps));
+
+    setTimeout('mainLoop()', (1000 / BASE.fps));
 }
 
 function touchObject(_param){

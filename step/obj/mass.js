@@ -32,7 +32,7 @@ baseMassObj.prototype.update = function(_num){
         }
     }
     if(this.x + this.w/2 < -50 || this.y - this.h/2 > BASE.canvas.height + 50){
-        deleteObject(_num);
+        this.flag = 2;
     }
 }
 
