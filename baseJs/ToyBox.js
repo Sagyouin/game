@@ -68,23 +68,23 @@ var ToyBox  = function(_w,_h){
 
     //Park Set
     this.Park = function(){};
-    this.Park.prototype = new BasePark(this.ctx, this.fps, this.canvas.width, this.canvas.height);
+    this.Park.prototype = new BasePark(this.ctx, this.fps, this.canvas.ratio, this.canvas.width, this.canvas.height);
 
     //Toy Set
     this.PolygonToy  = function(_sides){
         this.sides  = _sides;
     };
-    this.PolygonToy.prototype = new PolygonToy(this.ctx, this.canvas.ratio);
+    this.PolygonToy.prototype = new PolygonToy();
 
     this.CircleToy   = function(_aspect_ratio){
         this.aspect_ratio = _aspect_ratio;
     };
-    this.CircleToy.prototype  = new PolygonToy(this.ctx, this.canvas.ratio);
+    this.CircleToy.prototype  = new PolygonToy();
 
     this.ImageToy    = function(_img_name){
         this.image.name = _img_name
     };
-    this.ImageToy.prototype   = new PolygonToy(this.ctx, this.canvas.ratio);
+    this.ImageToy.prototype   = new PolygonToy();
 };
 
 /*-----------------------------------------------------------------------------------
