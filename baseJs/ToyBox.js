@@ -75,14 +75,11 @@ var ToyBox  = function(_w,_h){
         this.sides  = _sides;
     };
     this.PolygonToy.prototype = new PolygonToy();
-
-    this.CircleToy   = function(_aspect_ratio){
-        this.aspect_ratio = _aspect_ratio;
+    this.CircleToy  = function(){
     };
     this.CircleToy.prototype  = new PolygonToy();
-
-    this.ImageToy    = function(_img_name){
-        this.image.name = _img_name
+    this.ImageToy    = function(_image){
+        this.image  = _image;
     };
     this.ImageToy.prototype   = new PolygonToy();
 };

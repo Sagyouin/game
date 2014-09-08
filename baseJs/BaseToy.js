@@ -43,18 +43,20 @@ BaseToy.prototype.Touch = function(){
 /*-----------------------------------------------------------------------------------
                                 PolygonToy Functions
 -----------------------------------------------------------------------------------*/
-var PolygonToy = function(_ctx, _base_ratio){
+var PolygonToy = function(_sides){
     this.draw_pattern   = "Polygon";
     this.sides          = 4;  // 3:triangle 4:square 5:pentagon 6:hexagon 
 
     this.r      = 0; // Inscribed Circle
 
-    this.red    = 0;
+    this.red    = 255;
     this.blue   = 0;
     this.green  = 0;
 
     this.line   = 1;
 
+    this.sides  = _sides;
+    console.log(this.sides);
 };
 PolygonToy.prototype = new BaseToy();
 
@@ -78,9 +80,8 @@ CircleToy.prototype = new BaseToy();
 /*-----------------------------------------------------------------------------------
                                 ImageToy Functions
 -----------------------------------------------------------------------------------*/
-var ImageToy = function(_name){
+var ImageToy = function(_image){
     this.DrawPattern    = "Image";
-    this.image          = Array();
-    this.image.name     = _name;
+    this.image          = _image;
 };
 CircleToy.prototype = new BaseToy();

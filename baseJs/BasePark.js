@@ -114,3 +114,17 @@ BasePark.prototype.DrawPlygon = function(_toy){
     this.ctx.closePath();
     this.ctx.stroke();
 };
+
+BasePark.prototype.DrawImage = function(_toy){
+    this.ctx.drawImage(
+        _toy.image,
+        _toy.image.sw *           (_toy.image.num % ( _toy.image.w / _toy.image.sw)),
+        _toy.image.sh * Math.floor(_toy.image.num / ( _toy.image.w / _toy.image.sw)),
+        _toy.image.sw,
+        _toy.image.sh,
+        ( ( (_toy.x - _toy.w / 2) + CAMERA.x ) * this.ratio )|0,
+        ( ( (_toy.y - _toy.h / 2) + CAMERA.y ) * this.ratio )|0,
+        (_toy.w * this.ratio)|0,
+        (_toy.h * this.ratio)|0
+    );
+}
