@@ -49,14 +49,13 @@ var PolygonToy = function(_sides){
 
     this.r      = 0; // Inscribed Circle
 
-    this.red    = 255;
+    this.red    = 0;
     this.blue   = 0;
     this.green  = 0;
 
     this.line   = 1;
 
     this.sides  = _sides;
-    console.log(this.sides);
 };
 PolygonToy.prototype = new BaseToy();
 

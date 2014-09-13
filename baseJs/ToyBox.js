@@ -1,144 +1,47 @@
 /*
  * 
  */
-var ToyBox  = function(_w,_h){
+var ToyBox  = function(_w, _h){
+    //----- Frame rate -----//
     this.fps        = 60;
 
-    //Game Time
+    //----- Game timeer -----//
     this.time       = 0;
-    this.loopTime   = this.fps * 60 * 60 * 24;
+    this.loopTime   = this.fps * 60 * 60 * 24; //1Day
 
-    //Src
+    //----- Gamse source -----//
     this.image  = Array();
     this.sound  = Array();
 
-    //Parks & Toys
-    this.Parks  = Array();
-    this.Toys   = Array();
-    
-    //Camera
-    this.camera = Array();
-    this.camera.x   = 0;
-    this.camera.y   = 0;
+    //----- Parks & Toys variable -----//
+    this.Parks      = Array();
+    this.ParkList   = Array();
 
-    //Window size
-    this.window         = Array();
-    this.window.w       = _w;
-    this.window.h       = _h;
-    this.window.ratio   = this.window.h / this.window.w;
+    //----- Window size -----//
+    this.game_window         = Array();
+    this.game_window.w       = _w;
+    this.game_window.h       = _h;
+    this.game_window.ratio   = this.game_window.h / this.game_window.w;
 
-    //Device size
+    //----- Device(Browser) size -----//
     this.device         = Array();
     this.device.w       = document.documentElement.clientWidth;
     this.device.h       = document.documentElement.clientHeight;
     this.device.ratio   = this.device.h / this.device.w;
 
-    //Canvas setting (default:full screen)
-    this.canvas         = document.createElement('canvas');
-    this.canvas.setAttribute("id", "ToyBox");
-    this.canvas.ratio   = this.device.h / this.window.h;
-    this.canvas.width   = this.window.w * this.canvas.ratio;
-    this.canvas.height  = this.window.h * this.canvas.ratio;
-    this.canvas.ratio   = this.canvas.height / this.canvas.width;
-    this.canvas.style.position  = "absolute";
-    this.canvas.style.left      = "0";
-    this.canvas.style.top       = "0";
-    document.body.appendChild(this.canvas);
+    //----- Canvas size -----//
+    this.canvas         = Array();
+    this.canvas.ratio   = this.device.h / this.game_window.h;
+    this.canvas.w       = this.game_window.w * this.canvas.ratio;
+    this.canvas.h       = this.game_window.h * this.canvas.ratio;
 
-    //set context
-    this.ctx    = this.canvas.getContext('2d');
-
-    //touch event check
-    /*
-    if(window.TouchEvent){
-        this.canvas.addEventListener("touchstart",  this.onTouchStart,      false);
-        this.canvas.addEventListener("touchmove",   this.onTouchMove,       false);
-        this.canvas.addEventListener("touchend",    this.onTouchEnd,        false);
-    }else{
-        this.canvas.addEventListener("mousedown",   this.mouseDownListner,  false);
-        this.canvas.addEventListener("mousemove",   this.mouseMoveListner,  false);
-        this.canvas.addEventListener("mouseup",     this.mouseUpListner,    false);
-        this.canvas.addEventListener("contextmenu", this.contextMenu,       false);
-    }
-    */
-    //status 0:Pause 1:Processing 2:End
-    this.status = 0;
-
-    this.touch = Array();
-
-    //Park Set
-    this.Park = function(){};
-    this.Park.prototype = new BasePark(this.ctx, this.fps, this.canvas.ratio, this.canvas.width, this.canvas.height);
-
-    //Toy Set
-    this.PolygonToy  = function(_sides){
-        this.sides  = _sides;
-    };
+    //----- Prepare Toy -----//
+    this.PolygonToy  = function(_sides){this.sides  = _sides;};
     this.PolygonToy.prototype = new PolygonToy();
-    this.CircleToy  = function(){
-    };
+    this.CircleToy  = function(){};
     this.CircleToy.prototype  = new PolygonToy();
-    this.ImageToy    = function(_image){
-        this.image  = _image;
-    };
+    this.ImageToy    = function(_image){this.image  = _image;};
     this.ImageToy.prototype   = new PolygonToy();
-};
-
-/*-----------------------------------------------------------------------------------
-                            Toy Box Touch events
------------------------------------------------------------------------------------*/
-ToyBox.prototype.onTouchStart = function(event) {
-    this.touch = Array();
-    var rect = event.target.getBoundingClientRect();
-    for (var i = 0; i < event.touches.length; i++){
-        this.touch[i]   = Array();
-        this.touch[i].x = Math.floor( (event.touches[0].clientX - rect.left) );
-        this.touch[i].y = Math.floor( (event.touches[0].clientY - rect.top) );
-    }
-    this.touch.status = "touchstart";
-    event.preventDefault();
-};
-
-ToyBox.prototype.onTouchMove = function(event) {
-    this.touch = Array();
-    var rect = event.target.getBoundingClientRect();
-    for (var i = 0; i < event.touches.length; i++){
-        this.touch[i]   = Array();
-        this.touch[i].x = Math.floor( (event.touches[0].clientX - rect.left) );
-        this.touch[i].y = Math.floor( (event.touches[0].clientY - rect.top) );
-    }
-    this.touch.status = "touchmove";
-    event.preventDefault();
-};
-
-ToyBox.prototype.onTouchEnd = function(event) {
-    this.touch.status = "touchend";
-};
-
-ToyBox.prototype.mouseDownListner = function(event){
-    this.touch = Array();
-    var rect = event.target.getBoundingClientRect();
-    touch[0].x = Math.floor( (event.clientX - rect.left) );
-    touch[0].y = Math.floor( (event.clientY - rect.top) );
-    this.touch.status = "touchstart";
-};
-ToyBox.prototype.mouseMoveListner = function(event){
-    this.touch = Array();
-    var rect = event.target.getBoundingClientRect();
-    touch[0].x = Math.floor( (event.clientX - rect.left) );
-    touch[0].y = Math.floor( (event.clientY - rect.top) );
-    this.touch.status = "touchmove";
-};
-
-ToyBox.prototype.mouseUpListner = function(event){
-    this.touch.status = "touchend";
-};
-
-ToyBox.prototype.contextMenu = function(event){
-    /*
-    event.preventDefault();
-    touch.status = 4;
-    */
 };
 
 /*-----------------------------------------------------------------------------------
@@ -156,8 +59,6 @@ ToyBox.prototype.PrepareImage = function(_name, _src, _sw, _sh){
         this.image[_name].flag  = true;
     };
 };
-
-
 
 /*-----------------------------------------------------------------------------------
                                 Park functions
@@ -184,44 +85,15 @@ ToyBox.prototype.ReplacePark = function(_park){
     this.Parks.push(_park);
     this.Parks[this.Parks.length - 1].Entry();
 };
-
-/*-----------------------------------------------------------------------------------
-                                Toy Draw functions
------------------------------------------------------------------------------------*/
-ToyBox.prototype.DrawPlygon = function(_toy){
-    var radDiv = ( Math.PI * 2 ) / _toy.sides;
-    var R = _toy.r / ( Math.cos( radDiv / 2) );
-    var radOffset = ( _toy.angle != undefined ) ? (_toy.angle * Math.PI / 180) - (Math.PI / 2)  : -Math.PI / 2;
-
-    this.ctx.beginPath();
-    this.ctx.strokeStyle = "rgba(" + _toy.red + "," + _toy.green + "," + _toy.blue +" ," + _toy.alpha + ")";
-    this.ctx.moveTo(
-            ( _toy.x + Math.cos(radOffset) * R ) * this.canvas.ratio,
-            ( _toy.y + Math.sin(radOffset) * R ) * this.canvas.ratio
-    );
-    for (var i = 1; i < _toy.sides; ++i) {
-        var rad = radDiv * i + radOffset;
-        this.ctx.lineTo(
-            ( _toy.x + Math.cos(rad) * R ) * this.canvas.ratio,
-            ( _toy.y + Math.sin(rad) * R ) * this.canvas.ratio
-        );
-    }
-    this.ctx.closePath();
-    this.ctx.stroke();
+ToyBox.prototype.MakePark = function(){
+    var NewPark = new BasePark(this.fps, this.canvas);
+    return NewPark;
 };
 
-
-
-
-
-
-
-
-
-function randomNum(_min, _max){
+/*-----------------------------------------------------------------------------------
+                                Common functions
+-----------------------------------------------------------------------------------*/
+function RandomNum(_min, _max){
     var random = Math.floor( Math.random() * ( (_max + 1) - _min ) ) + _min;
     return random;
 };
-
-
-

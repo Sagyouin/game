@@ -1,19 +1,37 @@
 /*
 *
 */
-var BasePark = function(_ctx, _fps, _ratio, _w, _h){
-    this.Toys   = Array();  // this Park Toys
-    this.ctx    = _ctx;     // this Park ctx
-    this.fps    = _fps;     // this Park fps
-    this.w      = _w;       // this Park width
-    this.h      = _h;       // this Park height
-    this.ratio  = _ratio;
+var BasePark = function(_fps, _canvas){
+    //----- Input ToyBox Variable -----//
+    this.fps    = _fps;
+    this.w      = _canvas.w;
+    this.h      = _canvas.h;
+    this.ratio  = _canvas.ratio;
 
+    //----- Park Variable -----//
+    this.Toys   = Array();
+//    this.id     = this.GetId();
+
+    //----- setTimeout Variable -----//
     this.update_timer;
     this.draw_timer;
 
-};
+    //----- Canvas Variable (default:full screen) -----//
+    this.canvas                 = document.createElement('canvas');
+    this.canvas.width           = this.w;
+    this.canvas.height          = this.h;
+    this.canvas.style.position  = "absolute";
+    this.canvas.style.left      = "0";
+    this.canvas.style.top       = "0";
+//    this.canvas.setAttribute("id", this.id);
+    document.body.appendChild(this.canvas);
+    this.ctx    = this.canvas.getContext('2d');
 
+    //----- Camera -----//
+    this.camera = Array();
+    this.camera.x   = 0;
+    this.camera.y   = 0;
+};
 /*-----------------------------------------------------------------------------------
                                 Park functions
 -----------------------------------------------------------------------------------*/
@@ -24,7 +42,6 @@ BasePark.prototype.handleEvent = function() {
             break;
     }
 };
-
 /*-----------------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------------*/
 BasePark.prototype.Entry = function(){
@@ -37,6 +54,7 @@ BasePark.prototype.Start = function(){
 };
 BasePark.prototype.Exit = function(){
     this.Stop();
+    document.body.appendChild(this.canvas);
 };
 BasePark.prototype.Stop = function(){
     document.removeEventListener('touchstart', this, false)
@@ -128,3 +146,61 @@ BasePark.prototype.DrawImage = function(_toy){
         (_toy.h * this.ratio)|0
     );
 }
+
+
+/*-----------------------------------------------------------------------------------
+                            Toy Box Touch events
+-----------------------------------------------------------------------------------*/
+/*
+ToyBox.prototype.onTouchStart = function(event) {
+    this.touch = Array();
+    var rect = event.target.getBoundingClientRect();
+    for (var i = 0; i < event.touches.length; i++){
+        this.touch[i]   = Array();
+        this.touch[i].x = Math.floor( (event.touches[0].clientX - rect.left) );
+        this.touch[i].y = Math.floor( (event.touches[0].clientY - rect.top) );
+    }
+    this.touch.status = "touchstart";
+    event.preventDefault();
+};
+
+ToyBox.prototype.onTouchMove = function(event) {
+    this.touch = Array();
+    var rect = event.target.getBoundingClientRect();
+    for (var i = 0; i < event.touches.length; i++){
+        this.touch[i]   = Array();
+        this.touch[i].x = Math.floor( (event.touches[0].clientX - rect.left) );
+        this.touch[i].y = Math.floor( (event.touches[0].clientY - rect.top) );
+    }
+    this.touch.status = "touchmove";
+    event.preventDefault();
+};
+
+ToyBox.prototype.onTouchEnd = function(event) {
+    this.touch.status = "touchend";
+};
+
+ToyBox.prototype.mouseDownListner = function(event){
+    this.touch = Array();
+    var rect = event.target.getBoundingClientRect();
+    touch[0].x = Math.floor( (event.clientX - rect.left) );
+    touch[0].y = Math.floor( (event.clientY - rect.top) );
+    this.touch.status = "touchstart";
+};
+ToyBox.prototype.mouseMoveListner = function(event){
+    this.touch = Array();
+    var rect = event.target.getBoundingClientRect();
+    touch[0].x = Math.floor( (event.clientX - rect.left) );
+    touch[0].y = Math.floor( (event.clientY - rect.top) );
+    this.touch.status = "touchmove";
+};
+
+ToyBox.prototype.mouseUpListner = function(event){
+    this.touch.status = "touchend";
+};
+
+ToyBox.prototype.contextMenu = function(event){
+    event.preventDefault();
+    touch.status = 4;
+};
+*/
