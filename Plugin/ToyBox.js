@@ -67,12 +67,12 @@ ToyBox.prototype.PullPark = function(){
     if ( this.Parks.length > 0 ){
         this.Parks[this.Parks.length - 1].Exit();
         this.Parks.pop();
-        this.Parks[this.Parks.length - 1].Entry();
+        this.Parks[this.Parks.length - 1].Start();
     }
 };
 ToyBox.prototype.PushPark = function(_park){
     if ( this.Parks.length > 0 ){
-        this.Parks[this.Parks.length - 1].Exit();
+        this.Parks[this.Parks.length - 1].Stop();
     }
     this.Parks.push(_park);
     this.Parks[this.Parks.length - 1].Entry();
