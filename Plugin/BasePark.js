@@ -1,21 +1,48 @@
 /*
-*
-*/
+ *
+ */
 var BasePark = function(_fps, _canvas){
-    //----- Input ToyBox Variable -----//
+    //----- Input BasePark Variable -----//
     this.fps    = _fps;
     this.w      = _canvas.w;
     this.h      = _canvas.h;
     this.ratio  = _canvas.ratio;
 
     //----- Park Variable -----//
-    this.Toys   = Array();
+    this.Toys       = Array();
+    this.touch      = Array();
+    this.touch.flag = false;
 //    this.id     = this.GetId();
 
     //----- setTimeout Variable -----//
     this.update_timer;
     this.draw_timer;
 
+
+    //----- Touch event listener -----//
+    /*
+    if(window.TouchEvent){
+        this.canvas.addEventListener("touchstart", this, false);
+        this.canvas.addEventListener("touchmove",  this, false);
+        this.canvas.addEventListener("touchend",   this, false);
+    }else{
+        this.canvas.addEventListener("mousedown",   this, false);
+        this.canvas.addEventListener("mousemove",   this, false);
+        this.canvas.addEventListener("mouseup",     this, false);
+        //this.canvas.addEventListener("contextmenu", this, false);
+    }
+    */
+
+    //----- Camera -----//
+    this.camera = Array();
+    this.camera.x   = 0;
+    this.camera.y   = 0;
+};
+
+
+/*-----------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------*/
+BasePark.prototype.CreateCanvas = function(){
     //----- Canvas Variable (default:full screen) -----//
     this.canvas                 = document.createElement('canvas');
     this.canvas.width           = this.w;
@@ -23,41 +50,57 @@ var BasePark = function(_fps, _canvas){
     this.canvas.style.position  = "absolute";
     this.canvas.style.left      = "0";
     this.canvas.style.top       = "0";
-//    this.canvas.setAttribute("id", this.id);
+    //this.canvas.setAttribute("id", this.id);
     document.body.appendChild(this.canvas);
     this.ctx    = this.canvas.getContext('2d');
 
-    //----- Camera -----//
-    this.camera = Array();
-    this.camera.x   = 0;
-    this.camera.y   = 0;
+    this.canvas.addEventListener("touchstart", this, false);
+    this.canvas.addEventListener("touchmove",  this, false);
+    this.canvas.addEventListener("touchend",   this, false);
 };
+BasePark.prototype.DeleteCanvas = function(){
+    this.canvas.removeEventListener("touchstart", this, false);
+    this.canvas.removeEventListener("touchmove",  this, false);
+    this.canvas.removeEventListener("touchend",   this, false);
+    document.body.removeChild(this.canvas);
+};
+
 /*-----------------------------------------------------------------------------------
-                                Park functions
+                            Park Event functions
 -----------------------------------------------------------------------------------*/
-BasePark.prototype.handleEvent = function() {
+BasePark.prototype.handleEvent = function(event) {
+    console.log(event.type);
+    event.preventDefault();
     switch(event.type) {
         case 'touchstart':
-            this.Touch();
+            this.GetTouchStatus(event);
+            this.TouchOrigin();
+            break;
+        case 'touchmove':
+            this.GetTouchStatus(event);
+            this.TouchOrigin();
+            break;
+        case 'touchend':
+            this.GetTouchStatus(event);
+            this.TouchOrigin();
             break;
     }
 };
 /*-----------------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------------*/
 BasePark.prototype.Entry = function(){
+    this.CreateCanvas();
     this.Start();
 };
 BasePark.prototype.Start = function(){
-    document.addEventListener('touchstart', this, false);
     this.Update();
     this.Draw();
 };
 BasePark.prototype.Exit = function(){
     this.Stop();
-    document.body.appendChild(this.canvas);
+    this.DeleteCanvas();
 };
 BasePark.prototype.Stop = function(){
-    document.removeEventListener('touchstart', this, false)
     clearTimeout(this.update_timer);
     clearTimeout(this.draw_timer);
 };
@@ -80,11 +123,23 @@ BasePark.prototype.Draw = function(){
     }
     this.draw_timer  = setTimeout(function (){_this.Draw();}, (1000 / this.fps));
 };
+
 BasePark.prototype.Touch = function(){
+    this.ToysTouch();
+};
+BasePark.prototype.TouchOrigin = function(){
+    this.Touch();
+};
+BasePark.prototype.ToysTouch = function(){
     for (var i = 0; i < this.Toys.length; i++) {
-        this.Toys[i].Touch();
+        this.ToyTouch(i);
     }
 };
+BasePark.prototype.ToyTouch = function(_num){
+    this.Toys[_num].Touch(this.touch);
+};
+
+
 
 /*-----------------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------------*/
@@ -152,55 +207,22 @@ BasePark.prototype.DrawImage = function(_toy){
                             Toy Box Touch events
 -----------------------------------------------------------------------------------*/
 /*
-ToyBox.prototype.onTouchStart = function(event) {
-    this.touch = Array();
-    var rect = event.target.getBoundingClientRect();
-    for (var i = 0; i < event.touches.length; i++){
-        this.touch[i]   = Array();
-        this.touch[i].x = Math.floor( (event.touches[0].clientX - rect.left) );
-        this.touch[i].y = Math.floor( (event.touches[0].clientY - rect.top) );
-    }
-    this.touch.status = "touchstart";
-    event.preventDefault();
-};
-
-ToyBox.prototype.onTouchMove = function(event) {
-    this.touch = Array();
-    var rect = event.target.getBoundingClientRect();
-    for (var i = 0; i < event.touches.length; i++){
-        this.touch[i]   = Array();
-        this.touch[i].x = Math.floor( (event.touches[0].clientX - rect.left) );
-        this.touch[i].y = Math.floor( (event.touches[0].clientY - rect.top) );
-    }
-    this.touch.status = "touchmove";
-    event.preventDefault();
-};
-
-ToyBox.prototype.onTouchEnd = function(event) {
-    this.touch.status = "touchend";
-};
-
-ToyBox.prototype.mouseDownListner = function(event){
-    this.touch = Array();
-    var rect = event.target.getBoundingClientRect();
-    touch[0].x = Math.floor( (event.clientX - rect.left) );
-    touch[0].y = Math.floor( (event.clientY - rect.top) );
-    this.touch.status = "touchstart";
-};
-ToyBox.prototype.mouseMoveListner = function(event){
-    this.touch = Array();
-    var rect = event.target.getBoundingClientRect();
-    touch[0].x = Math.floor( (event.clientX - rect.left) );
-    touch[0].y = Math.floor( (event.clientY - rect.top) );
-    this.touch.status = "touchmove";
-};
-
-ToyBox.prototype.mouseUpListner = function(event){
-    this.touch.status = "touchend";
-};
-
-ToyBox.prototype.contextMenu = function(event){
-    event.preventDefault();
-    touch.status = 4;
-};
 */
+BasePark.prototype.GetTouchStatus = function(event) {
+    var rect = event.target.getBoundingClientRect();
+    this.touch.status = event.type;
+    switch(event.type) {
+        case 'touchstart':
+            this.touch[0]   = Array();
+            this.touch[0].x = Math.floor( (event.touches[0].clientX - rect.left) );
+            this.touch[0].y = Math.floor( (event.touches[0].clientY - rect.top) );
+            break;
+        case 'touchmove':
+            this.touch[1]   = Array();
+            this.touch[1].x = Math.floor( (event.touches[0].clientX - rect.left) );
+            this.touch[1].y = Math.floor( (event.touches[0].clientY - rect.top) );
+            break;
+        case 'touchend':
+            break;
+    }
+};
