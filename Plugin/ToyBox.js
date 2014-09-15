@@ -1,5 +1,5 @@
 /*
- * 
+ * Last Update 2014/09/14
  */
 var ToyBox  = function(_w, _h){
     //----- Frame rate -----//

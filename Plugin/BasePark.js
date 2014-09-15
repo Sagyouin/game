@@ -12,36 +12,22 @@ var BasePark = function(_fps, _canvas){
     this.Toys       = Array();
     this.touch      = Array();
     this.touch.flag = false;
-//    this.id     = this.GetId();
 
     //----- setTimeout Variable -----//
     this.update_timer;
     this.draw_timer;
 
-
-    //----- Touch event listener -----//
-    /*
-    if(window.TouchEvent){
-        this.canvas.addEventListener("touchstart", this, false);
-        this.canvas.addEventListener("touchmove",  this, false);
-        this.canvas.addEventListener("touchend",   this, false);
-    }else{
-        this.canvas.addEventListener("mousedown",   this, false);
-        this.canvas.addEventListener("mousemove",   this, false);
-        this.canvas.addEventListener("mouseup",     this, false);
-        //this.canvas.addEventListener("contextmenu", this, false);
-    }
-    */
-
     //----- Camera -----//
     this.camera = Array();
     this.camera.x   = 0;
     this.camera.y   = 0;
+
 };
 
 
-/*-----------------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------
+                                Park Canvas Function
+-----------------------------------------------------------------------------------*/
 BasePark.prototype.CreateCanvas = function(){
     //----- Canvas Variable (default:full screen) -----//
     this.canvas                 = document.createElement('canvas');
@@ -50,15 +36,16 @@ BasePark.prototype.CreateCanvas = function(){
     this.canvas.style.position  = "absolute";
     this.canvas.style.left      = "0";
     this.canvas.style.top       = "0";
-    //this.canvas.setAttribute("id", this.id);
     document.body.appendChild(this.canvas);
     this.ctx    = this.canvas.getContext('2d');
 
+    //----- Add EventListener -----//
     this.canvas.addEventListener("touchstart", this, false);
     this.canvas.addEventListener("touchmove",  this, false);
     this.canvas.addEventListener("touchend",   this, false);
 };
 BasePark.prototype.DeleteCanvas = function(){
+    //----- Remove EventListener -----//
     this.canvas.removeEventListener("touchstart", this, false);
     this.canvas.removeEventListener("touchmove",  this, false);
     this.canvas.removeEventListener("touchend",   this, false);
@@ -73,21 +60,17 @@ BasePark.prototype.handleEvent = function(event) {
     event.preventDefault();
     switch(event.type) {
         case 'touchstart':
-            this.GetTouchStatus(event);
-            this.TouchOrigin();
-            break;
         case 'touchmove':
-            this.GetTouchStatus(event);
-            this.TouchOrigin();
-            break;
         case 'touchend':
             this.GetTouchStatus(event);
             this.TouchOrigin();
             break;
     }
 };
-/*-----------------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------------*/
+
+/*-----------------------------------------------------------------------------------
+                            Change Park functions
+-----------------------------------------------------------------------------------*/
 BasePark.prototype.Entry = function(){
     this.CreateCanvas();
     this.Start();
@@ -119,16 +102,17 @@ BasePark.prototype.Draw = function(){
     this.ctx.clearRect(0,0, this.w, this.h);
     for (var i = 0; i < this.Toys.length; i++) {
         this.DrawToy(this.Toys[i]);
-        //this.Toys[i].Draw();
     }
     this.draw_timer  = setTimeout(function (){_this.Draw();}, (1000 / this.fps));
 };
 
-BasePark.prototype.Touch = function(){
-    this.ToysTouch();
-};
+/*-----------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------*/
 BasePark.prototype.TouchOrigin = function(){
     this.Touch();
+};
+BasePark.prototype.Touch = function(){
+    this.ToysTouch();
 };
 BasePark.prototype.ToysTouch = function(){
     for (var i = 0; i < this.Toys.length; i++) {
@@ -206,8 +190,6 @@ BasePark.prototype.DrawImage = function(_toy){
 /*-----------------------------------------------------------------------------------
                             Toy Box Touch events
 -----------------------------------------------------------------------------------*/
-/*
-*/
 BasePark.prototype.GetTouchStatus = function(event) {
     var rect = event.target.getBoundingClientRect();
     this.touch.status = event.type;

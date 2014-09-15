@@ -23,21 +23,64 @@ var BaseToy = function(){
 /*-----------------------------------------------------------------------------------
                                     BaseToy Functions
 -----------------------------------------------------------------------------------*/
-
-BaseToy.prototype.Start = function(){
+BaseToy.prototype.OriginStart = function(){
     this.status = 1;
+    this.Start();
+};
+BaseToy.prototype.Start = function(){
+};
+
+BaseToy.prototype.OriginUpdate = function(){
+    this.Update();
+    this.time++;
 };
 BaseToy.prototype.Update = function(){
     if (this.status == 1){
-        this.move();
+        this.Move();
     }
-    this.time++;
 };
 BaseToy.prototype.Move = function(){
     this.x += Math.cos(Matsh.PI / ( this.radian / 180 )) * this.speed;
     this.y += Math.sin(Matsh.PI / ( this.radian / 180 )) * this.speed;;
 };
 BaseToy.prototype.Touch = function(){
+};
+BaseToy.prototype.HitCheck = function(_otherToy){
+    if ( this.dcType == "d" && _otherToy.dcType == "d"){
+        return this.x == _otherToy.x && this.y == _otherToy.y;
+    };
+    if ( this.dcType == "d" && _otherToy.dcType == "s"){
+        return ( _otherToy.x - _otherToy.w / 2 ) < this.x && this.x < ( _otherToy.x + _otherToy.w / 2 ) &&
+                ( _otherToy.y - _otherToy.h / 2 ) < this.y && this.y < ( _otherToy.y + _otherToy.h / 2 );
+    };
+    if ( this.dcType == "d" && _otherToy.dcType == "c"){
+        return Math.pow((_otherToy.x - this.x ), 2) + Math.pow((_otherToy.y - this.y ), 2) < Math.pow(_otherToy.r, 2);
+    };
+
+
+    if ( this.dcType == "s" && _otherToy.dcType == "d"){
+        return ( this.x - this.w / 2 ) < _otherToy.x && _otherToy.x < ( this.x + this.w / 2 ) &&
+                ( this.y - this.h / 2 ) < _otherToy.y && _otherToy.y < ( this.y + this.h / 2 );
+    }
+    if ( this.dcType == "s" && _otherToy.dcType == "s"){
+        return  (_otherToy.x - (_otherToy.w / 2)) < (this.x + (this.w / 2)) &&
+                (this.x - (this.w / 2)) < (_otherToy.x + (_otherToy.w / 2)) &&
+                (_otherToy.y - (_otherToy.h / 2)) < (this.y + (this.h / 2)) &&
+                (this.y - (this.h / 2)) < (_otherToy.y + (_otherToy.h / 2));
+    };
+    if ( this.dcType == "s" && _otherToy.dcType == "c"){
+    };
+
+    if ( this.dcType == "c" && _otherToy.dcType == "d"){
+        return Math.pow((this.x - _otherToy.x ), 2) + Math.pow((this.y - _otherToy.y ), 2) < Math.pow(this.r, 2);
+    };
+    if ( this.dcType == "c" && _otherToy.dcType == "s"){
+    };
+    if ( this.dcType == "c" && _otherToy.dcType == "c"){
+        return Math.pow((this.x - _otherToy.x), 2) + Math.pow((this.y - _otherToy.y), 2) <
+                Math.pow((this.r + _otherToy.r), 2);
+    }
+    return false;
 };
 
 /*-----------------------------------------------------------------------------------
