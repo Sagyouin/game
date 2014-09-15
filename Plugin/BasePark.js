@@ -9,7 +9,7 @@ var BasePark = function(_fps, _canvas){
     this.ratio  = _canvas.ratio;
 
     //----- Park Variable -----//
-    this.Toys       = Array();
+    this.toyBoxes   = Array();
     this.touch      = Array();
     this.touch.flag = false;
 
@@ -21,9 +21,7 @@ var BasePark = function(_fps, _canvas){
     this.camera = Array();
     this.camera.x   = 0;
     this.camera.y   = 0;
-
 };
-
 
 /*-----------------------------------------------------------------------------------
                                 Park Canvas Function
@@ -78,6 +76,7 @@ BasePark.prototype.Entry = function(){
 BasePark.prototype.Start = function(){
     this.Update();
     this.Draw();
+    this.touch.flag = true;
 };
 BasePark.prototype.Exit = function(){
     this.Stop();
@@ -86,22 +85,26 @@ BasePark.prototype.Exit = function(){
 BasePark.prototype.Stop = function(){
     clearTimeout(this.update_timer);
     clearTimeout(this.draw_timer);
+    this.touch.flag = false;
 };
 
 /*-----------------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------------*/
 BasePark.prototype.Update = function(){
     var _this = this;
-    for (var i = 0; i < this.Toys.length; i++) {
-        this.Toys[i].Update();
+    for (var i = 0; i < this.toyBoxes.length; i++) {
+        this.toyBoxes[i].OriginUpdate();
     }
     this.update_timer = setTimeout(function (){_this.Update();}, (1000 / this.fps));
 };
+
 BasePark.prototype.Draw = function(){
     var _this = this;
     this.ctx.clearRect(0,0, this.w, this.h);
-    for (var i = 0; i < this.Toys.length; i++) {
-        this.DrawToy(this.Toys[i]);
+    for (var i = 0; i < this.toyBoxes.length; i++) {
+        for (var j = 0; j < this.toyBoxes[i].toys.length; j++){
+            this.DrawToy(this.toyBoxes[i].toys[j]);
+        }
     }
     this.draw_timer  = setTimeout(function (){_this.Draw();}, (1000 / this.fps));
 };
@@ -110,28 +113,35 @@ BasePark.prototype.Draw = function(){
 /*-----------------------------------------------------------------------------------*/
 BasePark.prototype.TouchOrigin = function(){
     this.Touch();
-};
-BasePark.prototype.Touch = function(){
     this.ToysTouch();
 };
+BasePark.prototype.Touch = function(){
+};
 BasePark.prototype.ToysTouch = function(){
-    for (var i = 0; i < this.Toys.length; i++) {
-        this.ToyTouch(i);
+    for (var i = 0; i < this.toyBoxes.length; i++) {
+        this.toyBoxes[i].OriginTouch(this.touch);
     }
 };
-BasePark.prototype.ToyTouch = function(_num){
-    this.Toys[_num].Touch(this.touch);
-};
-
-
 
 /*-----------------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------------*/
+/*
 BasePark.prototype.AddToy = function(_toy){
     this.Toys.push(_toy);
 };
+*/
+BasePark.prototype.AddToyBox = function(_toyBox){
+    this.toyBoxes.push(_toyBox);
+    this.SortToyBox();
+};
 BasePark.prototype.RemoveToy = function(_num){
-    this.Toys.splice(_num,1);
+    this.toyBoxes.splice(_num,1);
+};
+BasePark.prototype.SortToyBox = function(){
+    this.toyBoxes.sort(function(a, b) {
+        if( a.layer < b.layer ) return -1;
+        if( a.layer > b.layer ) return 1;
+    });
 };
 
 /*-----------------------------------------------------------------------------------*/
@@ -150,7 +160,6 @@ BasePark.prototype.DrawToy = function(_toy){
         //this.DrawImage();
     }
 };
-
 BasePark.prototype.DrawPlygon = function(_toy){
     var radDiv = ( Math.PI * 2 ) / _toy.sides;
     var R = _toy.r / ( Math.cos( radDiv / 2) );
@@ -171,7 +180,6 @@ BasePark.prototype.DrawPlygon = function(_toy){
     this.ctx.closePath();
     this.ctx.stroke();
 };
-
 BasePark.prototype.DrawImage = function(_toy){
     this.ctx.drawImage(
         _toy.image,
@@ -185,7 +193,6 @@ BasePark.prototype.DrawImage = function(_toy){
         (_toy.h * this.ratio)|0
     );
 }
-
 
 /*-----------------------------------------------------------------------------------
                             Toy Box Touch events

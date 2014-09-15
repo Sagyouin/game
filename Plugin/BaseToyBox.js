@@ -1,6 +1,11 @@
+/*
+ *
+ */
 var BaseToyBox  = function(){
     //----- ToyBox var -----//
     this.toys   = Array();
+
+    this.layer  = 0;
 
     //----- flag -----//
     this.updateFlag = true;
@@ -10,15 +15,15 @@ var BaseToyBox  = function(){
 BaseToyBox.prototype.AddToy  = function(_toy){
     this.toys.push(_toy);
 };
-BasePark.prototype.DeleteCheckToys = function(){
+BaseToyBox.prototype.DeleteCheckToys = function(){
     for (var i = 0; i < this.toys.length; i++) {
-        if (toys[i].status == 2){
+        if (this.toys[i].status == 2){
             this.DeleteToy(i);
             i--;
         }
     }
 };
-BasePark.prototype.DeleteToy = function(_num){
+BaseToyBox.prototype.DeleteToy = function(_num){
     this.toys.splice(_num,1);
 };
 //-------------------------------------------------------------//
@@ -26,7 +31,7 @@ BaseToyBox.prototype.OriginUpdate  = function(){
     this.Update();
     if (this.updateFlag){
         for (var i = 0; i < this.toys.length; i++) {
-            this.toys[i].Update();
+            this.toys[i].OriginUpdate();
         }
         this.DeleteCheckToys();
     }

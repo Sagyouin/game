@@ -16,8 +16,6 @@ var BaseToy = function(){
 
     this.flag = false;  // ToyDrawFlag false true
 
-    this.layer  = 0;
-
     this.alpha  = 1.0;
 };
 /*-----------------------------------------------------------------------------------
@@ -88,8 +86,6 @@ BaseToy.prototype.HitCheck = function(_otherToy){
 -----------------------------------------------------------------------------------*/
 var PolygonToy = function(_sides){
     this.draw_pattern   = "Polygon";
-    this.sides          = 4;  // 3:triangle 4:square 5:pentagon 6:hexagon 
-
     this.r      = 0; // Inscribed Circle
 
     this.red    = 0;

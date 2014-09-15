@@ -1,7 +1,7 @@
 /*
  * Last Update 2014/09/14
  */
-var ToyBox  = function(_w, _h){
+var ToyBoxTool  = function(_w, _h){
     //----- Frame rate -----//
     this.fps        = 60;
 
@@ -36,18 +36,12 @@ var ToyBox  = function(_w, _h){
     this.canvas.h       = this.game_window.h * this.canvas.ratio;
 
     //----- Prepare Toy -----//
-    this.PolygonToy  = function(_sides){this.sides  = _sides;};
-    this.PolygonToy.prototype = new PolygonToy();
-    this.CircleToy  = function(){};
-    this.CircleToy.prototype  = new PolygonToy();
-    this.ImageToy    = function(_image){this.image  = _image;};
-    this.ImageToy.prototype   = new PolygonToy();
 };
 
 /*-----------------------------------------------------------------------------------
                                 Toy Box functions
 -----------------------------------------------------------------------------------*/
-ToyBox.prototype.PrepareImage = function(_name, _src, _sw, _sh){
+ToyBoxTool.prototype.PrepareImage = function(_name, _src, _sw, _sh){
     this.image[_name]           = new Image();
     thisthis.image[_name].flag.image[_name].name      = _name;
     this.image[_name].src       = _src;
@@ -63,21 +57,21 @@ ToyBox.prototype.PrepareImage = function(_name, _src, _sw, _sh){
 /*-----------------------------------------------------------------------------------
                                 Park functions
 -----------------------------------------------------------------------------------*/
-ToyBox.prototype.PullPark = function(){
+ToyBoxTool.prototype.PullPark = function(){
     if ( this.Parks.length > 0 ){
         this.Parks[this.Parks.length - 1].Exit();
         this.Parks.pop();
         this.Parks[this.Parks.length - 1].Start();
     }
 };
-ToyBox.prototype.PushPark = function(_park){
+ToyBoxTool.prototype.PushPark = function(_park){
     if ( this.Parks.length > 0 ){
         this.Parks[this.Parks.length - 1].Stop();
     }
     this.Parks.push(_park);
     this.Parks[this.Parks.length - 1].Entry();
 };
-ToyBox.prototype.ReplacePark = function(_park){
+ToyBoxTool.prototype.ReplacePark = function(_park){
     if ( this.Parks.length > 0 ){
         this.Parks[this.Parks.length - 1].Exit();
         this.Parks.pop(_park);
@@ -85,11 +79,33 @@ ToyBox.prototype.ReplacePark = function(_park){
     this.Parks.push(_park);
     this.Parks[this.Parks.length - 1].Entry();
 };
-ToyBox.prototype.MakePark = function(){
+
+ToyBoxTool.prototype.CreatePark = function(){
+    //var NewPark = function(){};
+    //NewPark.prototype = new BasePark(this.fps, this.canvas);
     var NewPark = new BasePark(this.fps, this.canvas);
     return NewPark;
 };
-
+ToyBoxTool.prototype.CreateToyBox = function(){
+    //var NewToyBox = function(){};
+    //NewToyBox.prototype = new BaseToyBox();
+    var NewToyBox = new BaseToyBox();
+    return NewToyBox;
+};
+ToyBoxTool.prototype.CreatePolygonToy = function(_sides){
+    //var NewPolygonToy = function(){};
+    //NewPolygonToy.prototype = new PolygonToy(_sides);
+    var NewPolygonToy = new PolygonToy(_sides);
+    return NewPolygonToy;
+};
+/*
+    this.PolygonToy  = function(_sides){this.sides  = _sides;};
+    this.PolygonToy.prototype = new PolygonToy();
+    this.CircleToy  = function(){};
+    this.CircleToy.prototype  = new PolygonToy();
+    this.ImageToy    = function(_image){this.image  = _image;};
+    this.ImageToy.prototype   = new PolygonToy();
+*/
 /*-----------------------------------------------------------------------------------
                                 Common functions
 -----------------------------------------------------------------------------------*/
