@@ -4,7 +4,7 @@
 var BaseToy = function(){
     this.x      = 0;
     this.y      = 0;
-    this.ratio  = 0; // Size ratio
+    this.ratio  = 1; // Size ratio
     this.angle  = 0; 
 
     this.speed          = 0;
@@ -43,6 +43,7 @@ BaseToy.prototype.Move = function(){
 };
 BaseToy.prototype.Touch = function(){
 };
+
 BaseToy.prototype.HitCheck = function(_otherToy){
     if ( this.dcType == "d" && _otherToy.dcType == "d"){
         return this.x == _otherToy.x && this.y == _otherToy.y;
@@ -85,7 +86,7 @@ BaseToy.prototype.HitCheck = function(_otherToy){
                                 PolygonToy Functions
 -----------------------------------------------------------------------------------*/
 var PolygonToy = function(_sides){
-    this.draw_pattern   = "Polygon";
+    this.drawPattern   = "Polygon";
     this.r      = 0; // Inscribed Circle
 
     this.red    = 0;
@@ -102,7 +103,7 @@ PolygonToy.prototype = new BaseToy();
                                 CircleToy Functions
 -----------------------------------------------------------------------------------*/
 var CircleToy = function(){
-    this.draw_pattern   = "Circle";
+    this.drawPattern   = "Circle";
     this.aspect_ratio   = 1; // -:| = 1:_aspect_r
 
     this.r      = 0; // Inscribed Circle
@@ -119,7 +120,8 @@ CircleToy.prototype = new BaseToy();
                                 ImageToy Functions
 -----------------------------------------------------------------------------------*/
 var ImageToy = function(_image){
-    this.DrawPattern    = "Image";
+    this.drawPattern    = "Image";
     this.image          = _image;
+    this.image.num      = 0;
 };
-CircleToy.prototype = new BaseToy();
+ImageToy.prototype = new BaseToy();

@@ -43,14 +43,16 @@ var ToyBoxTool  = function(_w, _h){
 -----------------------------------------------------------------------------------*/
 ToyBoxTool.prototype.PrepareImage = function(_name, _src, _sw, _sh){
     this.image[_name]           = new Image();
-    thisthis.image[_name].flag.image[_name].name      = _name;
+    this.image[_name].name      = _name;
     this.image[_name].src       = _src;
-    this.image[_name].sw       = _sw;
-    this.image[_name].sh       = _sh;
+    this.image[_name].sw        = _sw;
+    this.image[_name].sh        = _sh;
     this.image[_name].flag      = false;
 
-    this.image[_name].onload   = function (){
-        this.image[_name].flag  = true;
+    this.image[_name].onload    = function (){
+        this.flag   = true;
+        this.w      = this.width;
+        this.h      = this.height;
     };
 };
 
@@ -81,22 +83,20 @@ ToyBoxTool.prototype.ReplacePark = function(_park){
 };
 
 ToyBoxTool.prototype.CreatePark = function(){
-    //var NewPark = function(){};
-    //NewPark.prototype = new BasePark(this.fps, this.canvas);
     var NewPark = new BasePark(this.fps, this.canvas);
     return NewPark;
 };
 ToyBoxTool.prototype.CreateToyBox = function(){
-    //var NewToyBox = function(){};
-    //NewToyBox.prototype = new BaseToyBox();
     var NewToyBox = new BaseToyBox();
     return NewToyBox;
 };
 ToyBoxTool.prototype.CreatePolygonToy = function(_sides){
-    //var NewPolygonToy = function(){};
-    //NewPolygonToy.prototype = new PolygonToy(_sides);
     var NewPolygonToy = new PolygonToy(_sides);
     return NewPolygonToy;
+};
+ToyBoxTool.prototype.CreateImageToy = function(_image){
+    var NewImageToy = new ImageToy(this.image[_image]);
+    return NewImageToy;
 };
 /*
     this.PolygonToy  = function(_sides){this.sides  = _sides;};

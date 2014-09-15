@@ -39,13 +39,13 @@ BaseToyBox.prototype.OriginUpdate  = function(){
 BaseToyBox.prototype.Update  = function(){
 };
 
-BaseToyBox.prototype.OriginTouch  = function(){
-    this.Touch();
+BaseToyBox.prototype.OriginTouch  = function(_touch){
+    this.Touch(_touch);
     if (this.touchFlag){
         for (var i = 0; i < this.toys.length; i++) {
-            this.toys[i].Touch();
+            this.toys[i].Touch(_touch);
         }
     }
 };
-BaseToyBox.prototype.Touch  = function(){
+BaseToyBox.prototype.Touch  = function(_touch){
 };

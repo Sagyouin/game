@@ -54,7 +54,6 @@ BasePark.prototype.DeleteCanvas = function(){
                             Park Event functions
 -----------------------------------------------------------------------------------*/
 BasePark.prototype.handleEvent = function(event) {
-    console.log(event.type);
     event.preventDefault();
     switch(event.type) {
         case 'touchstart':
@@ -147,17 +146,17 @@ BasePark.prototype.SortToyBox = function(){
 /*-----------------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------------*/
 BasePark.prototype.DrawToy = function(_toy){
-    if (_toy.draw_pattern == "Polygon"){
+    if (_toy.drawPattern == "Polygon"){
         this.DrawPlygon(_toy);
     }
-    if (_toy.draw_pattern == "Circle"){
+    if (_toy.drawPattern == "Circle"){
         //this.DrawCircle);
     }
-    if (_toy.draw_pattern == "Label"){
+    if (_toy.drawPattern == "Label"){
         //this.DrawLabel();
     }
-    if (_toy.draw_pattern == "Image"){
-        //this.DrawImage();
+    if (_toy.drawPattern == "Image"){
+        this.DrawImage(_toy);
     }
 };
 BasePark.prototype.DrawPlygon = function(_toy){
@@ -187,8 +186,8 @@ BasePark.prototype.DrawImage = function(_toy){
         _toy.image.sh * Math.floor(_toy.image.num / ( _toy.image.w / _toy.image.sw)),
         _toy.image.sw,
         _toy.image.sh,
-        ( ( (_toy.x - _toy.w / 2) + CAMERA.x ) * this.ratio )|0,
-        ( ( (_toy.y - _toy.h / 2) + CAMERA.y ) * this.ratio )|0,
+        ( ( (_toy.x - _toy.w / 2) ) * this.ratio )|0,
+        ( ( (_toy.y - _toy.h / 2) ) * this.ratio )|0,
         (_toy.w * this.ratio)|0,
         (_toy.h * this.ratio)|0
     );
@@ -203,13 +202,13 @@ BasePark.prototype.GetTouchStatus = function(event) {
     switch(event.type) {
         case 'touchstart':
             this.touch[0]   = Array();
-            this.touch[0].x = Math.floor( (event.touches[0].clientX - rect.left) );
-            this.touch[0].y = Math.floor( (event.touches[0].clientY - rect.top) );
+            this.touch[0].x = Math.floor( (event.touches[0].clientX - rect.left) ) / this.ratio;
+            this.touch[0].y = Math.floor( (event.touches[0].clientY - rect.top) ) / this.ratio;
             break;
         case 'touchmove':
             this.touch[1]   = Array();
-            this.touch[1].x = Math.floor( (event.touches[0].clientX - rect.left) );
-            this.touch[1].y = Math.floor( (event.touches[0].clientY - rect.top) );
+            this.touch[1].x = Math.floor( (event.touches[0].clientX - rect.left) ) / this.ratio;
+            this.touch[1].y = Math.floor( (event.touches[0].clientY - rect.top) ) / this.ratio;
             break;
         case 'touchend':
             break;
