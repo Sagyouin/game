@@ -185,17 +185,22 @@ Object.defineProperties(BasePark.prototype, {
 
     DrawImage: {
         value: function(_toy, _canvasNum){
+            this.ctxList[_canvasNum].save();
+            this.ctxList[_canvasNum].translate( _toy.w / 2 + _toy.x, _toy.h / 2 + _toy.y);
+            this.ctxList[_canvasNum].rotate(_toy.rad * Math.PI / 180);
+            
             this.ctxList[_canvasNum].drawImage(
                 _toy.image,
                 _toy.image.sw *           (_toy.image.num % ( _toy.image.w / _toy.image.sw)),
                 _toy.image.sh * Math.floor(_toy.image.num / ( _toy.image.h / _toy.image.sw)),
                 _toy.image.sw,
                 _toy.image.sh,
-                _toy.x - ( _toy.w / 2) |0,
-                _toy.y - ( _toy.h / 2) |0,
+                -_toy.w / 2 |0,
+                -_toy.h / 2 |0,
                 _toy.w |0,
                 _toy.h |0
             );
+            this.ctxList[_canvasNum].restore();
         }
     },
 
